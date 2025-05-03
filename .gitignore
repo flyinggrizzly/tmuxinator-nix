@@ -1,0 +1,12 @@
+.direnv/
+result
+result-*
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*~
+
+# Test files
+.DS_Store
