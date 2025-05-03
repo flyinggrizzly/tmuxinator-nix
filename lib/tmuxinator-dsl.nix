@@ -22,10 +22,12 @@ in
           # Expectation is to use utilities.constants.tmuxLayouts, but they all resolve to string and allowing
           # arbitrary values also permits custom layout strings from e.g. `% tmux list-windows`
           type = types.nullOr types.string;
+          default = null;
           description = "Tmux layout to use for the window";
         };
         panes = mkOption {
-          type = types.nullOr types.listOf types.str;
+          type = types.nullOr (types.listOf types.str);
+          default = null;
           description = "List of commands to run in the tmux window";
         };
       };
