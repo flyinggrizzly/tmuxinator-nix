@@ -9,10 +9,6 @@ in
   types = rec {
     window = types.submodule {
       options = {
-        name = mkOption {
-          type = types.str;
-          description = "Name of the tmux window";
-        };
         root = mkOption {
           type = types.nullOr types.str;
           default = null;
@@ -35,10 +31,6 @@ in
 
     project = types.submodule {
       options = {
-        name = mkOption {
-          type = types.str;
-          description = "Name of the tmuxinator project";
-        };
         root = mkOption {
           type = types.str;
           description = "Root directory of the project";
@@ -59,11 +51,12 @@ in
           description = "Window to focus on startup";
         };
         windows = mkOption {
-          type = types.listOf window;
+          type = types.attrsOf window;
           description = "List of windows to create in the tmux project";
         };
       };
     };
+    projects = types.attrsOf project;
   };
 
   compact = project: lib.filterAttrsRecursive (n: v: v != null) project;
