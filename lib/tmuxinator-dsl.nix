@@ -14,14 +14,14 @@ in
           description = "Name of the tmux window";
         };
         root = mkOption {
-          type = types.nullOr types.string;
+          type = types.nullOr types.str;
           default = null;
           description = "Root directory of the tmux window";
         };
         layout = mkOption {
           # Expectation is to use utilities.constants.tmuxLayouts, but they all resolve to string and allowing
           # arbitrary values also permits custom layout strings from e.g. `% tmux list-windows`
-          type = types.nullOr types.string;
+          type = types.nullOr types.str;
           default = null;
           description = "Tmux layout to use for the window";
         };
@@ -40,7 +40,7 @@ in
           description = "Name of the tmuxinator project";
         };
         root = mkOption {
-          type = types.string;
+          type = types.str;
           description = "Root directory of the project";
         };
         pre = mkOption {
