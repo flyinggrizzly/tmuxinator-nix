@@ -4,11 +4,29 @@ let
     types
     mkOption
     ;
+
+  transformWindows =
+    windows:
+    (map (window: {
+      ${window.name} = removeAttrs window [ "name" ];
+    }))
+      windows;
+
+  compact =
+    project:
+    lib.filterAttrsRecursive (name: value: if name == "windows" then true else value != null) project
+    // {
+      windows = transformWindows project.windows;
+    };
 in
 {
   types = rec {
     window = types.submodule {
       options = {
+        name = mkOption {
+          type = types.str;
+          description = "Name of the tmux window";
+        };
         root = mkOption {
           type = types.nullOr types.str;
           default = null;
@@ -51,7 +69,7 @@ in
           description = "Window to focus on startup";
         };
         windows = mkOption {
-          type = types.attrsOf window;
+          type = types.listOf window;
           description = "List of windows to create in the tmux project";
         };
       };
@@ -59,5 +77,5 @@ in
     projects = types.attrsOf project;
   };
 
-  compact = project: lib.filterAttrsRecursive (n: v: v != null) project;
+  prepareDefinition = name: project: { inherit name; } // (compact project);
 }

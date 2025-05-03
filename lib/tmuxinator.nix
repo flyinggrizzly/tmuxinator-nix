@@ -10,7 +10,7 @@ let
     mkOption
     mkIf
     mkEnableOption
-    mapAttrs
+    mapAttrs'
     ;
 
   dsl = import ./tmuxinator-dsl.nix { inherit lib pkgs; };
@@ -25,7 +25,7 @@ let
 
   generateYaml =
     name: project:
-    yamlFormat.generate "tmuxinator-nix--projects--project-${name}.yml" (dsl.compact project);
+    yamlFormat.generate "tmuxinator-nix--projects--project-${name}.yml" (dsl.prepareDefinition name project);
 
   cfg = config.programs.tmuxinator;
 in
@@ -58,7 +58,7 @@ in
       ++ listIf (cfg.rubyPackage != null) cfg.rubyPackage;
 
     home.file = mkIf (cfg.projects != { }) (
-      mapAttrs (name: project: {
+      mapAttrs' (name: project: {
         name = ".config/tmuxinator/${name}.yml";
         value = {
           source = generateYaml name project;
